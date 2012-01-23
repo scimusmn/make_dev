@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # make_dev_site.py
 
+import os
+import re
 import subprocess
 import logging
 import argparse
@@ -21,6 +23,13 @@ def main():
             #help='Git branch to clone')
 
     args = parser.parse_args()
+
+# Parse commands for python
+def shell_command(command):
+# Split the commands into a list for Popen
+    process = subprocess.Popen(command.split(' '),
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
 
 if __name__ == "__main__":
     main()
