@@ -7,6 +7,9 @@ import subprocess
 import logging
 import argparse
 
+logging.basicConfig(level=logging.INFO,
+                    format='%(levelname)s %(message)s')
+
 def main():
 
     parser = argparse.ArgumentParser(description='Make a dev site.')
@@ -23,6 +26,11 @@ def main():
             #help='Git branch to clone')
 
     args = parser.parse_args()
+
+# Example warning
+    logging.warning('Watch out')
+# Example info
+    logging.info('This is the info')
 
 # Parse commands for python
 def shell_command(command):
