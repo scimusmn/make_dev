@@ -7,15 +7,18 @@ import re
 import subprocess
 import logging
 import argparse
+import glob
 
 logging.basicConfig(level=logging.INFO,
-                    format='%(levelname)s %(message)s')
+        format='%(levelname)s %(message)s')
 
 def main():
 
     parser = argparse.ArgumentParser(description='Make a dev site.')
+
     parser.add_argument('giturl',
             help='URL of the git repo.')
+
     parser.add_argument('destination',
             help='Path to a destination for your clone')
 
@@ -35,19 +38,20 @@ def main():
 # Example info
     logging.info('This is the info')
 
-    logging.info(shell_command('git status -b'))
-    logging.info(shell_command('cd ../'))
-    logging.info(shell_command('ls -la'))
+# ---Git process---
+    logging.info(call_command('pwd'))
+
+    os.chdir(destination)
+
+    logging.info(call_command('git status'))
 
 # Parse commands for python
-def shell_command(command):
-    process = subprocess.Popen(command,
-            shell=True,
+def call_command(command):
+    process = subprocess.Popen(command.split(' '),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
-    ).stdout.read()
-
-    return process
+    )
+    return process.communicate()
 
 if __name__ == "__main__":
     main()
