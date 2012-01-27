@@ -29,33 +29,25 @@ def main():
     args = parser.parse_args()
     destination = args.destination
 
+# ---EXAMPLES---
 # Example warning
     logging.warning('Watch out')
 # Example info
     logging.info('This is the info')
 
-    #cd_path = 'cd ' + destination
-    #process = shell_command(cd_path)
-
-    print '---non function print---'
-    print subprocess.Popen("pwd", stdout=subprocess.PIPE, shell=True).stdout.read()
-
-    print '+++function print+++'
-    print shell_command('pwd')
-
-    print '```function logging print```'
-    logging.info(shell_command('pwd'))
-
-    #print process.stdout.read()
-    #logging.info(shell_command('pwd'))
-
-    #shell_command('git status')
+    logging.info(shell_command('git status -b'))
+    logging.info(shell_command('cd ../'))
+    logging.info(shell_command('ls -la'))
 
 # Parse commands for python
 def shell_command(command):
-# Split the commands into a list for Popen
-    print '===in shell_commnd function==='
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read()
+    process = subprocess.Popen(command,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+    ).stdout.read()
+
+    return process
 
 if __name__ == "__main__":
     main()
