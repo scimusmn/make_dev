@@ -39,11 +39,20 @@ def main():
     #logging.info('This is the info')
 
 # ---Git process---
-    logging.info(call_command('pwd'))
-
     os.chdir(destination)
 
-    logging.info(call_command('git status'))
+    #logging.info(call_command('git status'))
+
+    output,_ = (call_command('git status'))
+    match = re.search('# On branch ([^\s]*)', output)
+    branch = None
+    if match is None:
+        raise Exception('Could not get status')
+    #elif match.group(1) == 'master':
+        #raise Exception('You must be in the branch that you want to merge, not master')
+    else:
+        branch = match.group(1)
+        logging.info('On branch %s' % branch)
 
 # Parse commands for python
 def call_command(command):
