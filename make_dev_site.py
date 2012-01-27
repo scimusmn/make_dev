@@ -34,9 +34,9 @@ def main():
 
 # ---EXAMPLES---
 # Example warning
-    logging.warning('Watch out')
+    #logging.warning('Watch out')
 # Example info
-    logging.info('This is the info')
+    #logging.info('This is the info')
 
 # ---Git process---
     logging.info(call_command('pwd'))
