@@ -2,6 +2,7 @@
 # make_dev_site.py
 
 import os
+import sys
 import re
 import subprocess
 import logging
@@ -26,18 +27,35 @@ def main():
             #help='Git branch to clone')
 
     args = parser.parse_args()
+    destination = args.destination
 
 # Example warning
     logging.warning('Watch out')
 # Example info
     logging.info('This is the info')
 
+    #cd_path = 'cd ' + destination
+    #process = shell_command(cd_path)
+
+    print '---non function print---'
+    print subprocess.Popen("pwd", stdout=subprocess.PIPE, shell=True).stdout.read()
+
+    print '+++function print+++'
+    print shell_command('pwd')
+
+    print '```function logging print```'
+    logging.info(shell_command('pwd'))
+
+    #print process.stdout.read()
+    #logging.info(shell_command('pwd'))
+
+    #shell_command('git status')
+
 # Parse commands for python
 def shell_command(command):
 # Split the commands into a list for Popen
-    process = subprocess.Popen(command.split(' '),
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE)
+    print '===in shell_commnd function==='
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read()
 
 if __name__ == "__main__":
     main()
