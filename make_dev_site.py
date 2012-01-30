@@ -39,9 +39,9 @@ def main():
     #logging.info('This is the info')
 
 # ---Git process---
-    os.chdir(destination)
 
-    #logging.info(call_command('git status'))
+# Change directories to the destination
+    os.chdir(destination)
 
 # Assign the stdout from the communicate() tuple to output
 # Assign the stderr from the tuple to _ a throw away variable in Python
