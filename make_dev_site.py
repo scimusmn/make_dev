@@ -43,6 +43,8 @@ def main():
 
     #logging.info(call_command('git status'))
 
+# Assign the stdout from the communicate() tuple to output
+# Assign the stderr from the tuple to _ a throw away variable in Python
     output,_ = (call_command('git status'))
     match = re.search('# On branch ([^\s]*)', output)
     branch = None
@@ -60,6 +62,7 @@ def call_command(command):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
     )
+# Returns a tuple of the stdout and stderr
     return process.communicate()
 
 if __name__ == "__main__":
