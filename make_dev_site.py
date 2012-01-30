@@ -7,15 +7,18 @@ import re
 import subprocess
 import logging
 import argparse
+import glob
 
 logging.basicConfig(level=logging.INFO,
-                    format='%(levelname)s %(message)s')
+        format='%(levelname)s %(message)s')
 
 def main():
 
     parser = argparse.ArgumentParser(description='Make a dev site.')
+
     parser.add_argument('giturl',
             help='URL of the git repo.')
+
     parser.add_argument('destination',
             help='Path to a destination for your clone')
 
@@ -29,33 +32,38 @@ def main():
     args = parser.parse_args()
     destination = args.destination
 
+# ---EXAMPLES---
 # Example warning
-    logging.warning('Watch out')
+    #logging.warning('Watch out')
 # Example info
-    logging.info('This is the info')
+    #logging.info('This is the info')
 
-    #cd_path = 'cd ' + destination
-    #process = shell_command(cd_path)
+# ---Git process---
 
-    print '---non function print---'
-    print subprocess.Popen("pwd", stdout=subprocess.PIPE, shell=True).stdout.read()
+# Change directories to the destination
+    os.chdir(destination)
 
-    print '+++function print+++'
-    print shell_command('pwd')
-
-    print '```function logging print```'
-    logging.info(shell_command('pwd'))
-
-    #print process.stdout.read()
-    #logging.info(shell_command('pwd'))
-
-    #shell_command('git status')
+# Assign the stdout from the communicate() tuple to output
+# Assign the stderr from the tuple to _ a throw away variable in Python
+    output,_ = (call_command('git status'))
+    match = re.search('# On branch ([^\s]*)', output)
+    branch = None
+    if match is None:
+        raise Exception('Could not get status')
+    #elif match.group(1) == 'master':
+        #raise Exception('You must be in the branch that you want to merge, not master')
+    else:
+        branch = match.group(1)
+        logging.info('On branch %s' % branch)
 
 # Parse commands for python
-def shell_command(command):
-# Split the commands into a list for Popen
-    print '===in shell_commnd function==='
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).stdout.read()
+def call_command(command):
+    process = subprocess.Popen(command.split(' '),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+    )
+# Returns a tuple of the stdout and stderr
+    return process.communicate()
 
 if __name__ == "__main__":
     main()
