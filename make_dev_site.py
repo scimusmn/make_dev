@@ -45,10 +45,10 @@ def main():
             question = '''
 This destination already exists.
 Would you like to overwrite it?
-This will result in complete data loss of the existing files.'''
+This will completely destroy the existing files.'''
             if query_yes_no(question, default="no") == True:
                 shutil.rmtree(destination)
-                sys.exit('Exiting')
+                os.mkdir(destination)
             else:
                 sys.exit("\nQuitting since you don't want to overwite the destination you provided.")
 
