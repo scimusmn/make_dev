@@ -34,22 +34,11 @@ def main():
     giturl = args.giturl
     destination = args.destination
 
-# ---EXAMPLES---
-# Example warning
-    #logging.warning('Watch out')
-# Example info
-    #logging.info('This is the info')
-
-# ---Git process---
-
-# See if the remote origin exists and is git before
-# making any directories.
-    print giturl
-    output,_ = (call_command("git ls-remote " + giturl))
-    match = re.search('^ERROR.*$', output)
+    # See if the remote origin exists
+    output,error = (call_command("git ls-remote " + giturl))
+    match = re.search('ERROR', error)
     if match is not None:
-        sys.exit('There was a problem with your remote repo.')
-
+        sys.exit('There was a problem with your remote repo. \n%s' % error)
 
 # Make the desitnation directory if it doesn't exist.
     try:
