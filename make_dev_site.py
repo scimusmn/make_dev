@@ -80,8 +80,8 @@ def call_command(command):
 
 # Query users for a yes or no response
 def query_yes_no(question, default="yes"):
-    valid = {"Yes":True: "y":True: "ye":True:
-            "No":False, "n":False}
+    valid = {"yes":True, "y":True, "ye":True,
+            "no":False, "n":False}
     if default == None:
         prompt = " [y/n] "
     elif default == "yes":
