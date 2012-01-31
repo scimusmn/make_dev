@@ -8,6 +8,7 @@ import subprocess
 import logging
 import argparse
 import glob
+import shutil
 
 logging.basicConfig(level=logging.INFO,
         format='%(levelname)s %(message)s')
@@ -45,13 +46,15 @@ def main():
         os.mkdir(destination)
     except OSError as e:
         if 'File exists' in e.strerror:
-            question = "This destination already exists.\nWould you like to overwrite it?\nThis will result in complete data loss of the existing files."
+            question = '''
+This destination already exists.
+Would you like to overwrite it?
+This will result in complete data loss of the existing files.'''
             if query_yes_no(question, default="no") == True:
-                logging.info('Here I would make the directory')
+                shutil.rmtree(destination)
                 sys.exit('Exiting')
             else:
-                logging.info("Here I'd quit because the destination exists and you don't want me to overwrite it.")
-                sys.exit('Exiting')
+                sys.exit("\nQuitting since you don't want to overwite the destination you provided.")
 
 # Change directories to the destination
     try:
