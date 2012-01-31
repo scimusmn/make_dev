@@ -31,6 +31,7 @@ def main():
             #help='Git branch to clone')
 
     args = parser.parse_args()
+    giturl = args.giturl
     destination = args.destination
 
 # ---EXAMPLES---
@@ -40,6 +41,15 @@ def main():
     #logging.info('This is the info')
 
 # ---Git process---
+
+# See if the remote origin exists and is git before
+# making any directories.
+    print giturl
+    output,_ = (call_command("git ls-remote " + giturl))
+    match = re.search('^ERROR.*$', output)
+    if match is not None:
+        sys.exit('There was a problem with your remote repo.')
+
 
 # Make the desitnation directory if it doesn't exist.
     try:
