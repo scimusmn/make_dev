@@ -40,16 +40,29 @@ def main():
 
 # ---Git process---
 
+    try:
+        os.mkdir(destination)
+    except OSError as e:
+        if 'File exists' in e.strerror:
+            print 'The destination already exists. Would you like to overwrite it? This will result in complete data loss of the existing files.'
+            sys.exit('Exiting')
+
 # Change directories to the destination
-    os.chdir(destination)
+    try:
+        os.chdir(destination)
+    except OSError as e:
+        print 'There was a problem navigating to your destination'
+        print e.strerror + e.filename
+        sys.exit('Exiting')
 
 # Assign the stdout from the communicate() tuple to output
 # Assign the stderr from the tuple to _ a throw away variable in Python
     output,_ = (call_command('git status'))
+
     match = re.search('# On branch ([^\s]*)', output)
     branch = None
     if match is None:
-        raise Exception('Could not get status')
+        raise Exception('Your destination is not a git repo.')
     #elif match.group(1) == 'master':
         #raise Exception('You must be in the branch that you want to merge, not master')
     else:
