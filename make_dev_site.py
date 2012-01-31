@@ -40,12 +40,18 @@ def main():
 
 # ---Git process---
 
+# Make the desitnation directory if it doesn't exist.
     try:
         os.mkdir(destination)
     except OSError as e:
         if 'File exists' in e.strerror:
-            print 'The destination already exists. Would you like to overwrite it? This will result in complete data loss of the existing files.'
-            sys.exit('Exiting')
+            question = "This destination already exists.\nWould you like to overwrite it?\nThis will result in complete data loss of the existing files."
+            if query_yes_no(question, default="no") == True:
+                logging.info('Here I would make the directory')
+                sys.exit('Exiting')
+            else:
+                logging.info("Here I'd quit because the destination exists and you don't want me to overwrite it.")
+                sys.exit('Exiting')
 
 # Change directories to the destination
     try:
