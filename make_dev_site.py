@@ -29,6 +29,7 @@ def main():
     args = parser.parse_args()
     giturl = args.giturl
     destination = args.destination
+    branch = args.branch
 
     # Quit if the remote git repo doesn't exist.
     output,error = (call_command("git ls-remote " + giturl))
@@ -60,9 +61,31 @@ This will completely destroy the existing files.'''
         print e.strerror + e.filename
         sys.exit('Exiting')
 
-# Assign the stdout from the communicate() tuple to output
-# Assign the stderr from the tuple to _ a throw away variable in Python
-    output,_ = (call_command('git status'))
+    output,_ = (call_command('git init'))
+    output,_ = (call_command('git remote add origin ' + giturl))
+    output,_ = (call_command('git fetch'))
+    output,_ = (call_command('git pull origin master'))
+
+    if branch is not None:
+
+        # Create a list of available remote branches
+
+        output,_ = (call_command('git branch -a'))
+        branches = output.split('\n')
+        branches_available = []
+        for b in branches:
+            b = b.lstrip()
+            match = re.search('remotes/origin/', b)
+            if match is not None:
+                b = b.replace('remotes/origin/','')
+                branches_available.append(b)
+
+        if branch is not in branches_available:
+            sys.exit("The branch you are trying to pull doesn't exist in your remote repo.")
+
+        sys.exit("Branch checkin completed without error.")
+        output,_ = (call_command('git checkout -b ' + branch))
+        output,_ = (call_command('git pull origin ' + branch))
 
     match = re.search('# On branch ([^\s]*)', output)
     branch = None
