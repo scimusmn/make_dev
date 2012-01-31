@@ -30,13 +30,14 @@ def main():
     giturl = args.giturl
     destination = args.destination
 
-    # See if the remote origin exists
+    # Quit if the remote git repo doesn't exist.
     output,error = (call_command("git ls-remote " + giturl))
     match = re.search('ERROR', error)
     if match is not None:
         sys.exit('There was a problem with your remote repo. \n%s' % error)
 
-# Make the desitnation directory if it doesn't exist.
+    # Make the desitnation directory if it doesn't exist.
+    # Quit if there is a conflict.
     try:
         os.mkdir(destination)
     except OSError as e:
@@ -51,7 +52,7 @@ This will result in complete data loss of the existing files.'''
             else:
                 sys.exit("\nQuitting since you don't want to overwite the destination you provided.")
 
-# Change directories to the destination
+    # Change directories to the destination
     try:
         os.chdir(destination)
     except OSError as e:
