@@ -103,7 +103,7 @@ def call_command(command):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE
     )
-# Returns a tuple of the stdout and stderr
+    # Returns a tuple of the stdout and stderr
     return process.communicate()
 
 # Query users for a yes or no response
